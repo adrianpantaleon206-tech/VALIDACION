@@ -1,149 +1,20 @@
-Paso 1: Estructuración de la Interfaz (HTML)
+🛡️ Formulario de Registro con Validación Avanzada
+Interfaz web moderna y responsiva orientada al registro de usuarios, desarrollada con un diseño futurista de Glassmorphism y un sistema robusto de validación en tiempo real implementado con JavaScript puro (Vanilla JS).
 
-Concepto: Creación del esqueleto del formulario con HTML semántico.
+🚀 Características Principales
+Validación en Tiempo Real: Verificación instantánea de campos (nombre, apellido, cédula, país y teléfono) a medida que el usuario escribe o interactúa con los selectores.
 
-Proceso: Se utiliza la etiqueta <form> con el atributo novalidate para desactivar la validación por defecto del navegador. Se insertan los campos (<input> y <select>) asociados a sus etiquetas (<label>) mediante la propiedad for, garantizando accesibilidad y un orden claro para cada dato.
+Formato Automático (Máscaras): Limpieza de caracteres no numéricos y formateo dinámico de documentos de identidad con puntos separadores mediante expresiones regulares.
 
-Paso 2: Definición del Estilo y Diseño (CSS)
+Directorio Global: Listado integrado de países con sus respectivos códigos ISO y prefijos telefónicos internacionales actualizados.
 
-Concepto: Aplicación del diseño visual Glassmorphism (efecto de cristal esmerilado) y neón.
+Feedback Visual Dinámico: Cambio de estados de error y éxito con bordes personalizados (.error y .success) y mensajes descriptivos por campo.
 
-Proceso: Mediante CSS se configuran las variables de colores en :root para centralizar la paleta de colores. Se utiliza display: grid en el body para centrar la tarjeta en pantalla, se aplican luces flotantes con filter: blur(), y se ajustan las fuentes a un tamaño grande con peso de letra alto (font-weight: 700 y 800) para maximizar la legibilidad.
+Control de Envío Seguro: Bloqueo del envío por defecto del navegador (preventDefault()) y verificación global mediante validación por lotes (every()).
 
-Paso 3: Inicialización del Script en JS
+🛠️ Tecnologías Utilizadas
+HTML5: Estructuración semántica con desactivación de validación nativa (novalidate) para un control total desde script.
 
-Concepto: Carga segura de la lógica mediante el evento del DOM.
+CSS3: Estilos avanzados utilizando Variables (:root), CSS Grid, diseño adaptativo y efectos visuales de luz neón y vidrio esmerilado (backdrop-filter).
 
-Proceso: Se envuelve todo el código dentro del evento document.addEventListener('DOMContentLoaded', ...) para asegurar que el archivo JavaScript se ejecute únicamente cuando todos los elementos del HTML hayan cargado correctamente.
-
-Paso 4: Poblado Dinámico de Países y Códigos
-
-Concepto: Manipulación del DOM a partir de una lista de objetos.
-
-Proceso: Se define una lista de datos (listaPaisesGlobales) con los países, sus códigos ISO y prefijos. La función cargarPaisesLocales() recorre esta lista mediante .forEach() y crea elementos <option> de forma dinámica usando document.createElement(), insertándolos dentro de los selectores correspondientes con .appendChild().
-
-Paso 5: Captura de Eventos en Tiempo Real
-
-Concepto: Escuchadores de eventos (Event Listeners) dinámicos.
-
-Proceso: Se le asigna el evento input a los cuadros de texto para reaccionar a cada tecla presionada, y el evento change a los selectores desplegables para detectar cuando el usuario modifica una opción.
-
-Paso 6: Aplicación de Máscaras y Expresiones Regulares (RegEx)
-
-Concepto: Sanitización y formateo inmediato del texto ingresado.
-
-Proceso:
-
-En el campo de cédula, la expresión .replace(/\D/g, '') elimina cualquier carácter que no sea número, y mediante expresiones regulares se insertan los puntos de miles automáticamente (12.345.678).
-
-En el campo telefónico, se filtran de inmediato los textos para permitir únicamente números enteros.
-
-Paso 7: Evaluación y Validación de Datos
-
-Concepto: Validación de lógica de negocio condicional.
-
-Proceso: La función validarCampo() recibe el campo a revisar y mediante la estructura switch evalúa sus reglas (longitud mínima, presencia de letras o números). Si la regla falla, añade la clase CSS .error al contenedor para pintar los bordes de rojo y mostrar un mensaje descriptivo; si es correcta, aplica la clase .success para pintar el borde de verde.
-
-Paso 8: Control del Envío del Formulario
-
-Concepto: Intercepción del evento por defecto y procesamiento asíncrono.
-
-Proceso: Se captura el evento submit del formulario y se frena la recarga de la página con e.preventDefault(). Se evalúa que todos los campos devuelvan un estado válido, se cambia el estado del botón a modo de carga y, tras una simulación de tiempo (setTimeout), se confirma el registro exitoso al usuario limpiando el formulario.
-
-
-
-Aquí tienes el paso a paso exclusivo del archivo JavaScript (script.js), estructurado cronológicamente según cómo se ejecuta la lógica en el navegador:
-
-Paso 1: Captura de la Carga Inicial del DOM
-
-Código: document.addEventListener('DOMContentLoaded', () => { ... })
-
-Teoría: Espera a que la estructura HTML esté completamente construida en memoria antes de ejecutar el código. Esto evita que JavaScript intente seleccionar elementos inexistentes y arroje un error de tipo null.
-
-Paso 2: Referenciación de Elementos del HTML
-
-Código: const form = document.getElementById('registroForm'); y el objeto inputs = { ... }
-
-Teoría: Guarda en variables y dentro de un objeto los nodos del DOM utilizando document.getElementById(). Al almacenarlos en memoria una sola vez, evitamos buscar en el HTML repetidamente, optimizando el rendimiento de la aplicación.
-
-Paso 3: Definición del Arreglo de Datos (Estructura de Países)
-
-Código: const listaPaisesGlobales = [ { nombre: "Afganistán", iso: "AF", prefijo: "+93" }, ... ];
-
-Teoría: Almacena una colección de objetos (Array of Objects). Esta estructura sirve como la "base de datos local" que contiene toda la información necesaria (nombre, código ISO y prefijo telefónico) para alimentar los selectores de la página.
-
-Paso 4: Inyección Dinámica de Opciones en el DOM
-
-Código: La función cargarPaisesLocales() utilizando listaPaisesGlobales.forEach(item => { ... })
-
-Teoría:
-
-Recorre el arreglo elemento por elemento con el método .forEach().
-
-Crea etiquetas HTML <option> al vuelo con document.createElement('option').
-
-Asigna las propiedades .value y .textContent a cada opción.
-
-Inserta las opciones dentro de los <select> de países y prefijos utilizando .appendChild().
-
-Paso 5: Asignación de Escuchadores de Eventos (Event Listeners)
-
-Código: inputs.cedula.addEventListener('input', ...) y inputs.pais.addEventListener('change', ...)
-
-Teoría: Registra "antenas" en los elementos del formulario:
-
-Evento input: Se activa en tiempo real cada vez que el usuario presiona o borra una tecla en un cuadro de texto.
-
-Evento change: Se activa únicamente cuando el usuario selecciona un valor diferente dentro de las listas desplegables.
-
-Paso 6: Limpieza y Formateo en Tiempo Real (Máscaras con RegEx)
-
-Código: .replace(/\D/g, '') y .replace(/(\d{3})(\d+)/, '$1.$2')
-
-Teoría:
-
-Expresiones Regulares (RegEx): Utiliza patrones para analizar el texto. /\D/g busca cualquier carácter que no sea un dígito numérico y lo elimina reemplazándolo por un texto vacío ''.
-
-Formateo: Agrupa los números mediante expresiones regulares para insertar puntos de miles en la cédula automáticamente a medida que la persona escribe.
-
-Paso 7: Evaluación de Reglas de Validación (Lógica de Negocio)
-
-Código: La función validarCampo(campo) y la estructura switch(campo)
-
-Teoría:
-
-Recibe el nombre del campo a evaluar y extrae su valor limpio con .trim() (elimina espacios vacíos al inicio y final).
-
-La estructura condicional switch valida la condición de cada campo: comprueba requerimientos de presencia, valida que solo haya texto mediante la expresión /^[a-zA-Z...]+$/ o verifica la cantidad de dígitos.
-
-Paso 8: Manipulación de Estilos y Mensajes de Error
-
-Código: group.classList.add('error'); y group.querySelector('.msg-error').textContent = error;
-
-Teoría:
-
-Si la validación falla, JavaScript modifica el DOM añadiendo la clase CSS .error al contenedor padre y escribe el mensaje correspondiente dentro del <span>.
-
-Si la validación es correcta, remueve la clase de error, añade la clase .success para pintar los bordes de verde y limpia el mensaje. Devuelve un valor booleano (true o false).
-
-Paso 9: Intercepción del Envío del Formulario
-
-Código: form.addEventListener('submit', (e) => { e.preventDefault(); ... })
-
-Teoría:
-
-Captura la acción de enviar el formulario.
-
-e.preventDefault() detiene el comportamiento por defecto de la página (que recargaría la ventana y perdería los datos).
-
-Paso 10: Procesamiento Final y Simulación Asíncrona
-
-Código: campos.every(res => res === true) y setTimeout(() => { ... }, 1200);
-
-Teoría:
-
-El método .every() verifica que todos los campos hayan retornado true en sus validaciones.
-
-Si todo está correcto, deshabilita el botón con btnSubmit.disabled = true para evitar múltiples envíos.
-
-setTimeout simula una petición de red asíncrona hacia un servidor (espera 1.2 segundos), muestra la confirmación al usuario mediante alert(), y finalmente limpia el formulario con form.reset().
+JavaScript (ES6+): Manipulación eficiente del DOM, expresiones regulares (Regex), manejo de eventos avanzados y simulación de respuestas asíncronas (setTimeout).
