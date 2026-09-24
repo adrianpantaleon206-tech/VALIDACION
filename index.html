@@ -3,240 +3,332 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Verificación Telefónica Profundo</title>
+  <title>CYBER-REGISTER // Formulario de Acceso</title>
+  
+  <!-- Fuentes Futuristas -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Estilos CSS Integrados -->
   <style>
-    /* VARIABLES Y ESTILOS BASE */
     :root {
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
-      --bg-body: #f8fafc;
-      --surface: #ffffff;
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-      --border: #cbd5e1;
-      --border-focus: #2563eb;
-      --error: #ef4444;
-      --error-bg: #fef2f2;
-      --success: #10b981;
-      --radius: 8px;
+      --bg-dark: #050811;
+      --card-bg: rgba(13, 19, 33, 0.88);
+      --cyan-neon: #00f0ff;
+      --cyan-glow: rgba(0, 240, 255, 0.3);
+      --magenta-neon: #ff0055;
+      --magenta-glow: rgba(255, 0, 85, 0.4);
+      --green-neon: #00ff66;
+      --green-glow: rgba(0, 255, 102, 0.3);
+      --text-main: #e2e8f0;
+      --text-dim: #64748b;
+      --border-color: rgba(0, 240, 255, 0.25);
+      --font-header: 'Orbitron', sans-serif;
+      --font-body: 'Rajdhani', sans-serif;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    
+
     body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background-color: var(--bg-body);
+      background-color: var(--bg-dark);
       color: var(--text-main);
-      display: min-height;
+      font-family: var(--font-body);
       min-height: 100vh;
-      display: grid;
-      place-items: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       padding: 20px;
+      position: relative;
+      overflow-x: hidden;
     }
 
-    /* CONTENEDOR TIPO TARJETA */
-    .card {
-      background: var(--surface);
+    .background-grid {
+      position: fixed;
+      width: 200%;
+      height: 200%;
+      background-image: 
+        linear-gradient(to right, rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+      background-size: 35px 35px;
+      transform: rotateX(60deg) translateY(-20%);
+      animation: gridMove 25s linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes gridMove {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(35px); }
+    }
+
+    .cyber-card {
+      position: relative;
+      z-index: 10;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       width: 100%;
-      max-width: 420px;
+      max-width: 560px;
       padding: 32px;
-      border-radius: 12px;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
-      border: 1px solid #e2e8f0;
+      border-radius: 4px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 0 35px rgba(0, 0, 0, 0.9), inset 0 0 15px rgba(0, 240, 255, 0.05);
+      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
     }
 
-    .card-header { margin-bottom: 24px; }
-    .card-header h2 { font-size: 1.25rem; font-weight: 600; margin-bottom: 6px; }
-    .card-header p { font-size: 0.875rem; color: var(--text-muted); }
+    .card-header { margin-bottom: 20px; }
 
-    /* ESTRUCTURA DEL FORMULARIO */
+    .status-badge {
+      font-family: var(--font-header);
+      font-size: 0.65rem;
+      color: var(--cyan-neon);
+      letter-spacing: 2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .pulse-dot {
+      width: 6px;
+      height: 6px;
+      background-color: var(--cyan-neon);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--cyan-neon);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    h1 {
+      font-family: var(--font-header);
+      font-size: 1.6rem;
+      color: #fff;
+      text-shadow: 0 0 10px var(--cyan-glow);
+    }
+
+    .card-header p { color: var(--text-dim); font-size: 0.9rem; font-weight: 600; }
+
+    .form-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .form-row .form-group { flex: 1; }
+
     .form-group {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      margin-bottom: 20px;
+      gap: 6px;
+      margin-bottom: 14px;
     }
 
     label {
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: var(--text-main);
+      font-family: var(--font-header);
+      font-size: 0.7rem;
+      color: var(--cyan-neon);
+      letter-spacing: 1px;
     }
 
-    /* INPUT GROUP: UNE EL SELECT Y EL INPUT EN UN SOLO BLOQUE VISUAL */
-    .input-group {
+    .input-container {
       display: flex;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
+      background: rgba(5, 8, 17, 0.85);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
       overflow: hidden;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      transition: all 0.3s ease;
     }
 
-    .input-group:focus-within {
-      border-color: var(--border-focus);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    .input-container:focus-within {
+      border-color: var(--cyan-neon);
+      box-shadow: 0 0 12px var(--cyan-glow);
     }
 
-    /* ESTILOS PARA EL SELECT DE PAÍS */
-    select {
+    /* Selector de País e Indicador con Símbolo */
+    .phone-group select {
+      background: rgba(0, 240, 255, 0.08);
       border: none;
-      background-color: #f1f5f9;
-      padding: 0 12px;
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: var(--text-main);
+      border-right: 1px solid var(--border-color);
+      color: var(--cyan-neon);
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 0 8px;
+      outline: none;
       cursor: pointer;
-      border-right: 1px solid var(--border);
-      outline: none;
+      max-width: 170px;
     }
 
-    /* ESTILOS PARA EL CAMPO DE TEXTO DEL TELÉFONO */
-    input[type="tel"] {
-      flex: 1;
-      border: none;
-      padding: 12px 14px;
+    .country-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 10px;
+      background: rgba(0, 240, 255, 0.12);
+      border-right: 1px solid var(--border-color);
+      color: #fff;
+      font-weight: 700;
       font-size: 0.95rem;
-      outline: none;
-      color: var(--text-main);
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    select option { background-color: var(--bg-dark); color: #fff; }
+
+    input {
       width: 100%;
+      background: transparent;
+      border: none;
+      padding: 10px 12px;
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 600;
+      outline: none;
     }
 
-    /* ESTADOS DE VALIDACIÓN */
-    .input-group.invalid {
-      border-color: var(--error) !important;
-      background-color: var(--error-bg);
+    .input-container.invalid {
+      border-color: var(--magenta-neon) !important;
+      box-shadow: 0 0 10px var(--magenta-glow) !important;
     }
 
-    /* MENSAJE DE ERROR/PIE */
-    .feedback {
+    .input-container.valid {
+      border-color: var(--green-neon) !important;
+      box-shadow: 0 0 10px var(--green-glow) !important;
+    }
+
+    .feedback-text {
       font-size: 0.75rem;
-      min-height: 18px;
-      color: var(--error);
-      font-weight: 500;
+      color: var(--magenta-neon);
+      min-height: 14px;
+      font-weight: 600;
     }
 
-    /* BOTÓN */
-    .btn-submit {
+    .terminal-console {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 10px 12px;
+      border-left: 3px solid var(--cyan-neon);
+      font-family: monospace;
+      font-size: 0.8rem;
+      margin-bottom: 18px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .terminal-console .prompt { color: var(--cyan-neon); }
+    .terminal-console #globalStatus { color: var(--text-dim); }
+
+    .cyber-button {
       width: 100%;
-      padding: 12px;
-      background-color: var(--primary);
-      color: white;
+      padding: 14px;
+      background: var(--cyan-neon);
+      color: var(--bg-dark);
+      font-family: var(--font-header);
+      font-weight: 900;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
       border: none;
-      border-radius: var(--radius);
-      font-size: 0.95rem;
-      font-weight: 500;
       cursor: pointer;
-      transition: background-color 0.2s ease;
+      clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+      transition: all 0.2s ease;
     }
 
-    .btn-submit:hover { background-color: var(--primary-hover); }
+    .cyber-button:hover {
+      background: #fff;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+    }
   </style>
 </head>
 <body>
 
-  <main class="card">
+  <div class="background-grid"></div>
+
+  <main class="cyber-card">
     <header class="card-header">
-      <h2>Validación de Teléfono</h2>
-      <p>Selecciona tu país e ingresa tu número móvil.</p>
+      <div class="status-badge"><span class="pulse-dot"></span> SECURE TERMINAL v5.0</div>
+      <h1>REGISTRO DE USUARIO</h1>
+      <p>Verificación de credenciales en la red internacional</p>
     </header>
 
-    <form id="phoneForm" novalidate>
-      <div class="form-group">
-        <label for="phoneNumber">Número telefónico</label>
-        
-        <div class="input-group" id="inputGroup">
-          <!-- Selector de Código de País -->
-          <select id="countryCode" name="countryCode" aria-label="Código de país">
-            <option value="+58" data-pattern="^[0-9]{10}$" data-hint="10 dígitos numéricos">🇻🇪 +58</option>
-            <option value="+1"  data-pattern="^[0-9]{10}$" data-hint="10 dígitos numéricos">🇺🇸 +1</option>
-            <option value="+34" data-pattern="^[0-9]{9}$"  data-hint="9 dígitos numéricos">🇪🇸 +34</option>
-            <option value="+52" data-pattern="^[0-9]{10}$" data-hint="10 dígitos numéricos">🇲🇽 +52</option>
-            <option value="+57" data-pattern="^[0-9]{10}$" data-hint="10 dígitos numéricos">🇨🇴 +57</option>
-            <option value="+54" data-pattern="^[0-9]{10,11}$" data-hint="10 a 11 dígitos">🇦🇷 +54</option>
-          </select>
-
-          <!-- Input con Expresión Regular HTML nativa en 'pattern' -->
-          <input 
-            type="tel" 
-            id="phoneNumber" 
-            name="phoneNumber" 
-            placeholder="4121234567" 
-            pattern="^[0-9]{10}$" 
-            required 
-            autocomplete="tel-national"
-            aria-describedby="phoneFeedback"
-          />
+    <form id="cyberForm" novalidate>
+      
+      <!-- NOMBRE Y APELLIDO EN LÍNEA -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nombre">NOMBRE</label>
+          <div class="input-container">
+            <input type="text" id="nombre" name="nombre" placeholder="Nombre" required pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,30}$" autocomplete="off" />
+          </div>
+          <span class="feedback-text" id="feedback-nombre"></span>
         </div>
 
-        <!-- Zona para mensajes dinámicos de error (Accesible vía ARIA) -->
-        <span id="phoneFeedback" class="feedback" aria-live="polite"></span>
+        <div class="form-group">
+          <label for="apellido">APELLIDO</label>
+          <div class="input-container">
+            <input type="text" id="apellido" name="apellido" placeholder="Apellido" required pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,30}$" autocomplete="off" />
+          </div>
+          <span class="feedback-text" id="feedback-apellido"></span>
+        </div>
       </div>
 
-      <button type="submit" class="btn-submit">Enviar Datos</button>
+      <!-- CÉDULA DE IDENTIDAD -->
+      <div class="form-group">
+        <label for="cedula">CÉDULA DE IDENTIDAD</label>
+        <div class="input-container">
+          <input type="text" id="cedula" name="cedula" placeholder="12345678" required pattern="^[0-9]{7,8}$" autocomplete="off" />
+        </div>
+        <span class="feedback-text" id="feedback-cedula"></span>
+      </div>
+
+      <!-- CORREO ELECTRÓNICO -->
+      <div class="form-group">
+        <label for="correo">CORREO ELECTRÓNICO</label>
+        <div class="input-container">
+          <input type="email" id="correo" name="correo" placeholder="usuario@dominio.com" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" autocomplete="off" />
+        </div>
+        <span class="feedback-text" id="feedback-correo"></span>
+      </div>
+
+      <!-- PAÍS (DESPLEGABLE) + INDICADOR DE SÍMBOLO (+58) + TELÉFONO -->
+      <div class="form-group">
+        <label for="telefono">PAÍS Y TELÉFONO</label>
+        <div class="input-container phone-group">
+          <select id="countryCode" name="countryCode" aria-label="Código de País">
+            <!-- Opciones cargadas dinámicamente con banderas en script.js -->
+          </select>
+          <!-- Distintivo con símbolo de país y código dinámico (Ej: 🇻🇪 +58) -->
+          <div class="country-badge" id="countryBadge">🇻🇪 +58</div>
+          <input type="tel" id="telefono" name="telefono" placeholder="4121234567" required pattern="^[0-9]{7,12}$" autocomplete="off" />
+        </div>
+        <span class="feedback-text" id="feedback-telefono"></span>
+      </div>
+
+      <!-- CONTRASEÑA PROTEGIDA Y DISCRETA -->
+      <div class="form-group">
+        <label for="password">CONTRASEÑA</label>
+        <div class="input-container">
+          <input type="password" id="password" name="password" placeholder="••••••••" maxlength="8" required pattern="^[1-8]{8}$" autocomplete="off" />
+        </div>
+        <span class="feedback-text" id="feedback-password"></span>
+      </div>
+
+      <!-- TERMINAL CONSOLA -->
+      <div class="terminal-console">
+        <span class="prompt">> STATUS:</span>
+        <span id="globalStatus">ESPERANDO INGRESO DE DATOS</span>
+      </div>
+
+      <button type="submit" class="cyber-button">
+        ENVIAR Y VERIFICAR
+      </button>
+
     </form>
   </main>
 
-  <script>
-    // JS Mínimo para mantener sincronizado el patrón del HTML con las opciones seleccionadas
-    const countrySelect = document.getElementById('countryCode');
-    const phoneInput = document.getElementById('phoneNumber');
-    const inputGroup = document.getElementById('inputGroup');
-    const feedback = document.getElementById('phoneFeedback');
-
-    function syncPattern() {
-      const selectedOption = countrySelect.options[countrySelect.selectedIndex];
-      const regexPattern = selectedOption.getAttribute('data-pattern');
-      const hint = selectedOption.getAttribute('data-hint');
-
-      // Actualizar atributos HTML dinámicamente
-      phoneInput.setAttribute('pattern', regexPattern);
-      phoneInput.setAttribute('title', `Formato requerido: ${hint}`);
-      
-      validateField();
-    }
-
-    function validateField() {
-      const pattern = new RegExp(phoneInput.getAttribute('pattern'));
-      const val = phoneInput.value.trim();
-
-      if (!val) {
-        inputGroup.classList.remove('invalid');
-        feedback.textContent = '';
-        return true;
-      }
-
-      // Validación con RegEx en JavaScript
-      if (!pattern.test(val)) {
-        inputGroup.classList.add('invalid');
-        const hint = countrySelect.options[countrySelect.selectedIndex].getAttribute('data-hint');
-        feedback.textContent = `Formato inválido. Requiere: ${hint}`;
-        return false;
-      } else {
-        inputGroup.classList.remove('invalid');
-        feedback.textContent = '';
-        return true;
-      }
-    }
-
-    countrySelect.addEventListener('change', syncPattern);
-    phoneInput.addEventListener('input', validateField);
-
-    document.getElementById('phoneForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      if (validateField() && phoneInput.value.trim() !== '') {
-        alert(`Teléfono correcto: ${countrySelect.value} ${phoneInput.value}`);
-      } else {
-        validateField();
-        if(!phoneInput.value) feedback.textContent = 'Este campo es obligatorio.';
-      }
-    });
-
-    // Inicializar al cargar
-    syncPattern();
-  </script>
+  <!-- Enlace al JS -->
+  <script src="script.js"></script>
 </body>
 </html>
