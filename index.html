@@ -3,624 +3,240 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registro Completo</title>
+  <title>Verificación Telefónica Profundo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
   <style>
+    /* VARIABLES Y ESTILOS BASE */
     :root {
-      --bg: #030712;
-      --card-bg: #0b1120;
-      --text: #ffffff;
-      --text-muted: #cbd5e1;
-      --primary: #3b82f6;
-      --error: #fb7185;
-      --success: #34d399;
-      --border: #334155;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg-body: #f8fafc;
+      --surface: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border: #cbd5e1;
+      --border-focus: #2563eb;
+      --error: #ef4444;
+      --error-bg: #fef2f2;
+      --success: #10b981;
+      --radius: 8px;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
     body {
-      background-color: var(--bg);
-      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      display: min-height;
       min-height: 100vh;
       display: grid;
       place-items: center;
-      padding: 2rem 1rem;
-      position: relative;
-      overflow-x: hidden;
+      padding: 20px;
     }
 
-    .glow-1, .glow-2 {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(120px);
-      z-index: 0;
-      pointer-events: none;
-    }
-    .glow-1 { width: 350px; height: 350px; background: #1d4ed8; top: -50px; left: -50px; opacity: 0.6; }
-    .glow-2 { width: 400px; height: 400px; background: #0284c7; bottom: -50px; right: -50px; opacity: 0.5; }
-
+    /* CONTENEDOR TIPO TARJETA */
     .card {
-      position: relative;
-      z-index: 1;
-      background-color: rgba(11, 17, 32, 0.90);
-      backdrop-filter: blur(20px);
+      background: var(--surface);
       width: 100%;
-      max-width: 560px;
-      padding: 3rem 2.5rem 2rem 2.5rem;
-      border-radius: 1.5rem;
-      border: 1px solid rgba(59, 130, 246, 0.3);
-      box-shadow: 0 0 35px rgba(59, 130, 246, 0.2), inset 0 0 20px rgba(59, 130, 246, 0.08);
+      max-width: 420px;
+      padding: 32px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+      border: 1px solid #e2e8f0;
     }
 
-    .header { margin-bottom: 2.2rem; text-align: center; }
-    .header h2 { 
-      font-size: 2.1rem; 
-      font-weight: 800; 
-      margin-bottom: 0.5rem;
-      color: #fff;
-      text-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
-      letter-spacing: -0.02em;
-    }
-    .header p { color: var(--text-muted); font-size: 1.05rem; font-weight: 500; }
+    .card-header { margin-bottom: 24px; }
+    .card-header h2 { font-size: 1.25rem; font-weight: 600; margin-bottom: 6px; }
+    .card-header p { font-size: 0.875rem; color: var(--text-muted); }
 
-    .group { margin-bottom: 1.5rem; position: relative; }
-    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
-    .input-combined { display: grid; grid-template-columns: 100px 1fr; gap: 0.6rem; }
-    .phone-combined { display: grid; grid-template-columns: 155px 1fr; gap: 0.6rem; }
+    /* ESTRUCTURA DEL FORMULARIO */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
 
     label {
-      display: block;
-      font-size: 0.9rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: #93c5fd;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 1rem 1.1rem;
-      background-color: rgba(3, 7, 18, 0.8);
-      border: 2px solid var(--border);
-      border-radius: 0.75rem;
-      color: var(--text);
-      font-size: 1.1rem;
-      font-weight: 600;
-      outline: none;
-      transition: all 0.25s ease;
-    }
-
-    select option { background-color: #0f172a; color: #ffffff; font-size: 1rem; }
-    input::placeholder { color: #64748b; font-weight: 500; }
-
-    input:focus, select:focus { 
-      border-color: var(--primary) !important; 
-      box-shadow: 0 0 16px rgba(59, 130, 246, 0.5) !important;
-    }
-
-    .group.error input, .group.error select { 
-      border-color: var(--error) !important; 
-      box-shadow: 0 0 10px rgba(251, 113, 133, 0.4) !important; 
-    }
-    .group.success input, .group.success select { 
-      border-color: var(--success) !important; 
-      box-shadow: 0 0 10px rgba(52, 211, 153, 0.3) !important; 
-    }
-
-    .msg-error {
-      color: var(--error);
       font-size: 0.875rem;
-      font-weight: 600;
-      margin-top: 0.4rem;
-      display: block;
-      min-height: 1.2em;
-      opacity: 0;
-      transition: opacity 0.2s ease;
+      font-weight: 500;
+      color: var(--text-main);
     }
 
-    .group.error .msg-error { opacity: 1; }
+    /* INPUT GROUP: UNE EL SELECT Y EL INPUT EN UN SOLO BLOQUE VISUAL */
+    .input-group {
+      display: flex;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
 
+    .input-group:focus-within {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    /* ESTILOS PARA EL SELECT DE PAÍS */
+    select {
+      border: none;
+      background-color: #f1f5f9;
+      padding: 0 12px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-main);
+      cursor: pointer;
+      border-right: 1px solid var(--border);
+      outline: none;
+    }
+
+    /* ESTILOS PARA EL CAMPO DE TEXTO DEL TELÉFONO */
+    input[type="tel"] {
+      flex: 1;
+      border: none;
+      padding: 12px 14px;
+      font-size: 0.95rem;
+      outline: none;
+      color: var(--text-main);
+      width: 100%;
+    }
+
+    /* ESTADOS DE VALIDACIÓN */
+    .input-group.invalid {
+      border-color: var(--error) !important;
+      background-color: var(--error-bg);
+    }
+
+    /* MENSAJE DE ERROR/PIE */
+    .feedback {
+      font-size: 0.75rem;
+      min-height: 18px;
+      color: var(--error);
+      font-weight: 500;
+    }
+
+    /* BOTÓN */
     .btn-submit {
       width: 100%;
-      padding: 1.15rem;
-      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      padding: 12px;
+      background-color: var(--primary);
       color: white;
       border: none;
-      border-radius: 0.75rem;
-      font-size: 1.2rem;
-      font-weight: 800;
+      border-radius: var(--radius);
+      font-size: 0.95rem;
+      font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s ease;
-      margin-top: 1rem;
-      box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-      letter-spacing: 0.02em;
+      transition: background-color 0.2s ease;
     }
 
-    .btn-submit:hover { 
-      background: linear-gradient(135deg, #60a5fa, #2563eb); 
-      box-shadow: 0 0 30px rgba(59, 130, 246, 0.8);
-    }
-    .btn-submit:active { transform: scale(0.98); }
-
-    .footer-autor {
-      text-align: center;
-      margin-top: 1.5rem;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      border-top: 1px solid rgba(51, 65, 85, 0.5);
-      padding-top: 1rem;
-      letter-spacing: 0.05em;
-    }
-    .footer-autor span { color: #93c5fd; font-weight: 700; }
+    .btn-submit:hover { background-color: var(--primary-hover); }
   </style>
 </head>
 <body>
 
-  <div class="glow-1"></div>
-  <div class="glow-2"></div>
+  <main class="card">
+    <header class="card-header">
+      <h2>Validación de Teléfono</h2>
+      <p>Selecciona tu país e ingresa tu número móvil.</p>
+    </header>
 
-  <div class="card">
-    <div class="header">
-      <h2>Registro de Usuario</h2>
-      <p>Ingresa tus datos personales de contacto</p>
-    </div>
-
-    <form id="registroForm" novalidate>
-      <div class="row">
-        <div class="group" id="group-nombre">
-          <label for="nombre">Nombre</label>
-          <input type="text" id="nombre" placeholder="Juan">
-          <span class="msg-error"></span>
-        </div>
-
-        <div class="group" id="group-apellido">
-          <label for="apellido">Apellido</label>
-          <input type="text" id="apellido" placeholder="Pérez">
-          <span class="msg-error"></span>
-        </div>
-      </div>
-
-      <div class="group" id="group-correo">
-        <label for="correo">Correo Electrónico</label>
-        <input type="email" id="correo" placeholder="correo@ejemplo.com">
-        <span class="msg-error"></span>
-      </div>
-
-      <div class="row">
-        <div class="group" id="group-password">
-          <label for="password">Contraseña</label>
-          <input type="password" id="password" placeholder="••••••••">
-          <span class="msg-error"></span>
-        </div>
-
-        <div class="group" id="group-confirmPassword">
-          <label for="confirmPassword">Confirmar Clave</label>
-          <input type="password" id="confirmPassword" placeholder="••••••••">
-          <span class="msg-error"></span>
-        </div>
-      </div>
-
-      <div class="group" id="group-cedula">
-        <label for="cedula">Cédula / Documento</label>
-        <div class="input-combined">
-          <select id="tipoCedula">
-            <option value="V">V-</option>
-            <option value="E">E-</option>
-            <option value="J">J-</option>
-            <option value="P">P-</option>
+    <form id="phoneForm" novalidate>
+      <div class="form-group">
+        <label for="phoneNumber">Número telefónico</label>
+        
+        <div class="input-group" id="inputGroup">
+          <!-- Selector de Código de País -->
+          <select id="countryCode" name="countryCode" aria-label="Código de país">
+            <option value="+58" data-pattern="^[0-9]{10}$" data-hint="10 dígitos numéricos">🇻🇪 +58</option>
+            <option value="+1"  data-pattern="^[0-9]{10}$" data-hint="10 dígitos numéricos">🇺🇸 +1</option>
+            <option value="+34" data-pattern="^[0-9]{9}$"  data-hint="9 dígitos numéricos">🇪🇸 +34</option>
+            <option value="+52" data-pattern="^[0-9]{10}$" data-hint="10 dígitos numéricos">🇲🇽 +52</option>
+            <option value="+57" data-pattern="^[0-9]{10}$" data-hint="10 dígitos numéricos">🇨🇴 +57</option>
+            <option value="+54" data-pattern="^[0-9]{10,11}$" data-hint="10 a 11 dígitos">🇦🇷 +54</option>
           </select>
-          <input type="text" id="cedula" placeholder="12345678" maxlength="10">
+
+          <!-- Input con Expresión Regular HTML nativa en 'pattern' -->
+          <input 
+            type="tel" 
+            id="phoneNumber" 
+            name="phoneNumber" 
+            placeholder="4121234567" 
+            pattern="^[0-9]{10}$" 
+            required 
+            autocomplete="tel-national"
+            aria-describedby="phoneFeedback"
+          />
         </div>
-        <span class="msg-error"></span>
+
+        <!-- Zona para mensajes dinámicos de error (Accesible vía ARIA) -->
+        <span id="phoneFeedback" class="feedback" aria-live="polite"></span>
       </div>
 
-      <div class="group" id="group-pais">
-        <label for="pais">País de Residencia</label>
-        <select id="pais">
-          <option value="">Selecciona tu país</option>
-        </select>
-        <span class="msg-error"></span>
-      </div>
-
-      <div class="group" id="group-telefono">
-        <label for="telefono">Número Telefónico</label>
-        <div class="phone-combined">
-          <select id="codigoPais">
-            <option value="">Código</option>
-          </select>
-          <input type="tel" id="telefono" placeholder="4121234567">
-        </div>
-        <span class="msg-error"></span>
-      </div>
-
-      <button type="submit" class="btn-submit" id="btnSubmit">Completar Registro</button>
+      <button type="submit" class="btn-submit">Enviar Datos</button>
     </form>
-
-    <div class="footer-autor">
-      Desarrollado por <span>Adrian Pantaleon</span>
-    </div>
-  </div>
+  </main>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const form = document.getElementById('registroForm');
-      const btnSubmit = document.getElementById('btnSubmit');
+    // JS Mínimo para mantener sincronizado el patrón del HTML con las opciones seleccionadas
+    const countrySelect = document.getElementById('countryCode');
+    const phoneInput = document.getElementById('phoneNumber');
+    const inputGroup = document.getElementById('inputGroup');
+    const feedback = document.getElementById('phoneFeedback');
 
-      const inputs = {
-        nombre: document.getElementById('nombre'),
-        apellido: document.getElementById('apellido'),
-        correo: document.getElementById('correo'),
-        password: document.getElementById('password'),
-        confirmPassword: document.getElementById('confirmPassword'),
-        tipoCedula: document.getElementById('tipoCedula'),
-        cedula: document.getElementById('cedula'),
-        pais: document.getElementById('pais'),
-        codigoPais: document.getElementById('codigoPais'),
-        telefono: document.getElementById('telefono')
-      };
+    function syncPattern() {
+      const selectedOption = countrySelect.options[countrySelect.selectedIndex];
+      const regexPattern = selectedOption.getAttribute('data-pattern');
+      const hint = selectedOption.getAttribute('data-hint');
 
-      const listaPaisesGlobales = [
-        { nombre: "Afganistán", iso: "AF", prefijo: "+93" },
-        { nombre: "Albania", iso: "AL", prefijo: "+355" },
-        { nombre: "Alemania", iso: "DE", prefijo: "+49" },
-        { nombre: "Andorra", iso: "AD", prefijo: "+376" },
-        { nombre: "Angola", iso: "AO", prefijo: "+244" },
-        { nombre: "Antigua y Barbuda", iso: "AG", prefijo: "+1" },
-        { nombre: "Arabia Saudita", iso: "SA", prefijo: "+966" },
-        { nombre: "Argelia", iso: "DZ", prefijo: "+213" },
-        { nombre: "Argentina", iso: "AR", prefijo: "+54" },
-        { nombre: "Armenia", iso: "AM", prefijo: "+374" },
-        { nombre: "Australia", iso: "AU", prefijo: "+61" },
-        { nombre: "Austria", iso: "AT", prefijo: "+43" },
-        { nombre: "Azerbaiyán", iso: "AZ", prefijo: "+994" },
-        { nombre: "Bahamas", iso: "BS", prefijo: "+1" },
-        { nombre: "Bangladés", iso: "BD", prefijo: "+880" },
-        { nombre: "Barbados", iso: "BB", prefijo: "+1" },
-        { nombre: "Baréin", iso: "BH", prefijo: "+973" },
-        { nombre: "Bélgica", iso: "BE", prefijo: "+32" },
-        { nombre: "Belice", iso: "BZ", prefijo: "+501" },
-        { nombre: "Benín", iso: "BJ", prefijo: "+229" },
-        { nombre: "Bielorrusia", iso: "BY", prefijo: "+375" },
-        { nombre: "Birmania", iso: "MM", prefijo: "+95" },
-        { nombre: "Bolivia", iso: "BO", prefijo: "+591" },
-        { nombre: "Bosnia y Herzegovina", iso: "BA", prefijo: "+387" },
-        { nombre: "Botsuana", iso: "BW", prefijo: "+267" },
-        { nombre: "Brasil", iso: "BR", prefijo: "+55" },
-        { nombre: "Brunéi", iso: "BN", prefijo: "+673" },
-        { nombre: "Bulgaria", iso: "BG", prefijo: "+359" },
-        { nombre: "Burkina Faso", iso: "BF", prefijo: "+226" },
-        { nombre: "Burundi", iso: "BI", prefijo: "+257" },
-        { nombre: "Bután", iso: "BT", prefijo: "+975" },
-        { nombre: "Cabo Verde", iso: "CV", prefijo: "+238" },
-        { nombre: "Camboya", iso: "KH", prefijo: "+855" },
-        { nombre: "Camerún", iso: "CM", prefijo: "+237" },
-        { nombre: "Canadá", iso: "CA", prefijo: "+1" },
-        { nombre: "Catar", iso: "QA", prefijo: "+974" },
-        { nombre: "Chad", iso: "TD", prefijo: "+235" },
-        { nombre: "Chile", iso: "CL", prefijo: "+56" },
-        { nombre: "China", iso: "CN", prefijo: "+86" },
-        { nombre: "Chipre", iso: "CY", prefijo: "+357" },
-        { nombre: "Colombia", iso: "CO", prefijo: "+57" },
-        { nombre: "Comoras", iso: "KM", prefijo: "+269" },
-        { nombre: "Corea del Norte", iso: "KP", prefijo: "+850" },
-        { nombre: "Corea del Sur", iso: "KR", prefijo: "+82" },
-        { nombre: "Costa de Marfil", iso: "CI", prefijo: "+225" },
-        { nombre: "Costa Rica", iso: "CR", prefijo: "+506" },
-        { nombre: "Croacia", iso: "HR", prefijo: "+385" },
-        { nombre: "Cuba", iso: "CU", prefijo: "+53" },
-        { nombre: "Dinamarca", iso: "DK", prefijo: "+45" },
-        { nombre: "Dominica", iso: "DM", prefijo: "+1" },
-        { nombre: "Ecuador", iso: "EC", prefijo: "+593" },
-        { nombre: "Egipto", iso: "EG", prefijo: "+20" },
-        { nombre: "El Salvador", iso: "SV", prefijo: "+503" },
-        { nombre: "Emiratos Árabes Unidos", iso: "AE", prefijo: "+971" },
-        { nombre: "Eritrea", iso: "ER", prefijo: "+291" },
-        { nombre: "Eslovaquia", iso: "SK", prefijo: "+421" },
-        { nombre: "Eslovenia", iso: "SI", prefijo: "+386" },
-        { nombre: "España", iso: "ES", prefijo: "+34" },
-        { nombre: "Estados Unidos", iso: "US", prefijo: "+1" },
-        { nombre: "Estonia", iso: "EE", prefijo: "+372" },
-        { nombre: "Etiopía", iso: "ET", prefijo: "+251" },
-        { nombre: "Filipinas", iso: "PH", prefijo: "+63" },
-        { nombre: "Finlandia", iso: "FI", prefijo: "+358" },
-        { nombre: "Fiyi", iso: "FJ", prefijo: "+679" },
-        { nombre: "Francia", iso: "FR", prefijo: "+33" },
-        { nombre: "Gabón", iso: "GA", prefijo: "+241" },
-        { nombre: "Gambia", iso: "GM", prefijo: "+220" },
-        { nombre: "Georgia", iso: "GE", prefijo: "+995" },
-        { nombre: "Ghana", iso: "GH", prefijo: "+233" },
-        { nombre: "Granada", iso: "GD", prefijo: "+1" },
-        { nombre: "Grecia", iso: "GR", prefijo: "+30" },
-        { nombre: "Guatemala", iso: "GT", prefijo: "+502" },
-        { nombre: "Guinea", iso: "GN", prefijo: "+224" },
-        { nombre: "Guinea Ecuatorial", iso: "GQ", prefijo: "+240" },
-        { nombre: "Guinea-Bisáu", iso: "GW", prefijo: "+245" },
-        { nombre: "Guyana", iso: "GY", prefijo: "+592" },
-        { nombre: "Haití", iso: "HT", prefijo: "+509" },
-        { nombre: "Honduras", iso: "HN", prefijo: "+504" },
-        { nombre: "Hungría", iso: "HU", prefijo: "+36" },
-        { nombre: "India", iso: "IN", prefijo: "+91" },
-        { nombre: "Indonesia", iso: "ID", prefijo: "+62" },
-        { nombre: "Irak", iso: "IQ", prefijo: "+964" },
-        { nombre: "Irán", iso: "IR", prefijo: "+98" },
-        { nombre: "Irlanda", iso: "IE", prefijo: "+353" },
-        { nombre: "Islandia", iso: "IS", prefijo: "+354" },
-        { nombre: "Islas Marshall", iso: "MH", prefijo: "+692" },
-        { nombre: "Islas Salomón", iso: "SB", prefijo: "+677" },
-        { nombre: "Israel", iso: "IL", prefijo: "+972" },
-        { nombre: "Italia", iso: "IT", prefijo: "+39" },
-        { nombre: "Jamaica", iso: "JM", prefijo: "+1" },
-        { nombre: "Japón", iso: "JP", prefijo: "+81" },
-        { nombre: "Jordania", iso: "JO", prefijo: "+962" },
-        { nombre: "Kazajistán", iso: "KZ", prefijo: "+7" },
-        { nombre: "Kenia", iso: "KE", prefijo: "+254" },
-        { nombre: "Kirguistán", iso: "KG", prefijo: "+996" },
-        { nombre: "Kiribati", iso: "KI", prefijo: "+686" },
-        { nombre: "Kuwait", iso: "KW", prefijo: "+965" },
-        { nombre: "Laos", iso: "LA", prefijo: "+856" },
-        { nombre: "Lesoto", iso: "LS", prefijo: "+266" },
-        { nombre: "Letonia", iso: "LV", prefijo: "+371" },
-        { nombre: "Líbano", iso: "LB", prefijo: "+961" },
-        { nombre: "Liberia", iso: "LR", prefijo: "+231" },
-        { nombre: "Libia", iso: "LY", prefijo: "+218" },
-        { nombre: "Liechtenstein", iso: "LI", prefijo: "+423" },
-        { nombre: "Lituania", iso: "LT", prefijo: "+370" },
-        { nombre: "Luxemburgo", iso: "LU", prefijo: "+352" },
-        { nombre: "Macedonia del Norte", iso: "MK", prefijo: "+389" },
-        { nombre: "Madagascar", iso: "MG", prefijo: "+261" },
-        { nombre: "Malasia", iso: "MY", prefijo: "+60" },
-        { nombre: "Malaui", iso: "MW", prefijo: "+265" },
-        { nombre: "Maldivas", iso: "MV", prefijo: "+960" },
-        { nombre: "Malí", iso: "ML", prefijo: "+223" },
-        { nombre: "Malta", iso: "MT", prefijo: "+356" },
-        { nombre: "Marruecos", iso: "MA", prefijo: "+212" },
-        { nombre: "Mauricio", iso: "MU", prefijo: "+230" },
-        { nombre: "Mauritania", iso: "MR", prefijo: "+222" },
-        { nombre: "México", iso: "MX", prefijo: "+52" },
-        { nombre: "Micronesia", iso: "FM", prefijo: "+691" },
-        { nombre: "Moldavia", iso: "MD", prefijo: "+373" },
-        { nombre: "Mónaco", iso: "MC", prefijo: "+377" },
-        { nombre: "Mongolia", iso: "MN", prefijo: "+976" },
-        { nombre: "Montenegro", iso: "ME", prefijo: "+382" },
-        { nombre: "Mozambique", iso: "MZ", prefijo: "+258" },
-        { nombre: "Namibia", iso: "NA", prefijo: "+264" },
-        { nombre: "Nauru", iso: "NR", prefijo: "+674" },
-        { nombre: "Nepal", iso: "NP", prefijo: "+977" },
-        { nombre: "Nicaragua", iso: "NI", prefijo: "+505" },
-        { nombre: "Níger", iso: "NE", prefijo: "+227" },
-        { nombre: "Nigeria", iso: "NG", prefijo: "+234" },
-        { nombre: "Noruega", iso: "NO", prefijo: "+47" },
-        { nombre: "Nueva Zelanda", iso: "NZ", prefijo: "+64" },
-        { nombre: "Omán", iso: "OM", prefijo: "+968" },
-        { nombre: "Países Bajos", iso: "NL", prefijo: "+31" },
-        { nombre: "Pakistán", iso: "PK", prefijo: "+92" },
-        { nombre: "Palaos", iso: "PW", prefijo: "+680" },
-        { nombre: "Palestina", iso: "PS", prefijo: "+970" },
-        { nombre: "Panamá", iso: "PA", prefijo: "+507" },
-        { nombre: "Papúa Nueva Guinea", iso: "PG", prefijo: "+675" },
-        { nombre: "Paraguay", iso: "PY", prefijo: "+595" },
-        { nombre: "Perú", iso: "PE", prefijo: "+51" },
-        { nombre: "Polonia", iso: "PL", prefijo: "+48" },
-        { nombre: "Portugal", iso: "PT", prefijo: "+351" },
-        { nombre: "Reino Unido", iso: "GB", prefijo: "+44" },
-        { nombre: "República Centroafricana", iso: "CF", prefijo: "+236" },
-        { nombre: "República Checa", iso: "CZ", prefijo: "+420" },
-        { nombre: "República del Congo", iso: "CG", prefijo: "+242" },
-        { nombre: "República Democrática del Congo", iso: "CD", prefijo: "+243" },
-        { nombre: "República Dominicana", iso: "DO", prefijo: "+1" },
-        { nombre: "Ruanda", iso: "RW", prefijo: "+250" },
-        { nombre: "Rumanía", iso: "RO", prefijo: "+40" },
-        { nombre: "Rusia", iso: "RU", prefijo: "+7" },
-        { nombre: "Samoa", iso: "WS", prefijo: "+685" },
-        { nombre: "San Cristóbal y Nieves", iso: "KN", prefijo: "+1" },
-        { nombre: "San Marino", iso: "SM", prefijo: "+378" },
-        { nombre: "San Vicente y las Granadinas", iso: "VC", prefijo: "+1" },
-        { nombre: "Santa Lucía", iso: "LC", prefijo: "+1" },
-        { nombre: "Santo Tomé y Príncipe", iso: "ST", prefijo: "+239" },
-        { nombre: "Senegal", iso: "SN", prefijo: "+221" },
-        { nombre: "Serbia", iso: "RS", prefijo: "+381" },
-        { nombre: "Seychelles", iso: "SC", prefijo: "+248" },
-        { nombre: "Sierra Leona", iso: "SL", prefijo: "+232" },
-        { nombre: "Singapur", iso: "SG", prefijo: "+65" },
-        { nombre: "Siria", iso: "SY", prefijo: "+963" },
-        { nombre: "Somalia", iso: "SO", prefijo: "+252" },
-        { nombre: "Sri Lanka", iso: "LK", prefijo: "+94" },
-        { nombre: "Suazilandia", iso: "SZ", prefijo: "+268" },
-        { nombre: "Sudáfrica", iso: "ZA", prefijo: "+27" },
-        { nombre: "Sudán", iso: "SD", prefijo: "+249" },
-        { nombre: "Sudán del Sur", iso: "SS", prefijo: "+211" },
-        { nombre: "Suecia", iso: "SE", prefijo: "+46" },
-        { nombre: "Suiza", iso: "CH", prefijo: "+41" },
-        { nombre: "Surinam", iso: "SR", prefijo: "+597" },
-        { nombre: "Tailandia", iso: "TH", prefijo: "+66" },
-        { nombre: "Tanzania", iso: "TZ", prefijo: "+255" },
-        { nombre: "Tayikistán", iso: "TJ", prefijo: "+992" },
-        { nombre: "Timor Oriental", iso: "TL", prefijo: "+670" },
-        { nombre: "Togo", iso: "TG", prefijo: "+228" },
-        { nombre: "Tonga", iso: "TO", prefijo: "+676" },
-        { nombre: "Trinidad y Tobago", iso: "TT", prefijo: "+1" },
-        { nombre: "Túnez", iso: "TN", prefijo: "+216" },
-        { nombre: "Turkmenistán", iso: "TM", prefijo: "+993" },
-        { nombre: "Turquía", iso: "TR", prefijo: "+90" },
-        { nombre: "Tuvalu", iso: "TV", prefijo: "+688" },
-        { nombre: "Ucrania", iso: "UA", prefijo: "+380" },
-        { nombre: "Uganda", iso: "UG", prefijo: "+256" },
-        { nombre: "Uruguay", iso: "UY", prefijo: "+598" },
-        { nombre: "Uzbekistán", iso: "UZ", prefijo: "+998" },
-        { nombre: "Vanuatu", iso: "VU", prefijo: "+678" },
-        { nombre: "Ciudad del Vaticano", iso: "VA", prefijo: "+379" },
-        { nombre: "Venezuela", iso: "VE", prefijo: "+58" },
-        { nombre: "Vietnam", iso: "VN", prefijo: "+84" },
-        { nombre: "Yemen", iso: "YE", prefijo: "+967" },
-        { nombre: "Yibuti", iso: "DJ", prefijo: "+253" },
-        { nombre: "Zambia", iso: "ZM", prefijo: "+260" },
-        { nombre: "Zimbabue", iso: "ZW", prefijo: "+263" }
-      ];
+      // Actualizar atributos HTML dinámicamente
+      phoneInput.setAttribute('pattern', regexPattern);
+      phoneInput.setAttribute('title', `Formato requerido: ${hint}`);
+      
+      validateField();
+    }
 
-      function cargarPaisesLocales() {
-        listaPaisesGlobales.forEach(item => {
-          const optPais = document.createElement('option');
-          optPais.value = item.iso;
-          optPais.textContent = item.nombre;
-          optPais.dataset.prefijo = item.prefijo;
-          inputs.pais.appendChild(optPais);
+    function validateField() {
+      const pattern = new RegExp(phoneInput.getAttribute('pattern'));
+      const val = phoneInput.value.trim();
 
-          const optCod = document.createElement('option');
-          optCod.value = item.prefijo;
-          optCod.textContent = `${item.iso} (${item.prefijo})`;
-          inputs.codigoPais.appendChild(optCod);
-        });
+      if (!val) {
+        inputGroup.classList.remove('invalid');
+        feedback.textContent = '';
+        return true;
       }
 
-      cargarPaisesLocales();
-
-      inputs.cedula.addEventListener('input', (e) => {
-        e.target.value = e.target.value.replace(/\D/g, '');
-        validarCampo('cedula');
-      });
-
-      inputs.telefono.addEventListener('input', (e) => {
-        e.target.value = e.target.value.replace(/\D/g, '');
-        validarCampo('telefono');
-      });
-
-      inputs.pais.addEventListener('change', () => {
-        const selectedOption = inputs.pais.options[inputs.pais.selectedIndex];
-        const prefijo = selectedOption.dataset.prefijo;
-        if (prefijo) {
-          inputs.codigoPais.value = prefijo;
-        } else {
-          inputs.codigoPais.value = "";
-        }
-        validarCampo('pais');
-        validarCampo('telefono');
-      });
-
-      ['nombre', 'apellido', 'correo', 'password', 'confirmPassword', 'cedula', 'telefono'].forEach(campo => {
-        if (inputs[campo]) {
-          inputs[campo].addEventListener('input', () => validarCampo(campo));
-        }
-      });
-
-      ['codigoPais', 'tipoCedula'].forEach(campo => {
-        if (inputs[campo]) {
-          inputs[campo].addEventListener('change', () => {
-            if (campo === 'codigoPais') validarCampo('telefono');
-            else if (campo === 'tipoCedula') validarCampo('cedula');
-          });
-        }
-      });
-
-      function validarCampo(campo) {
-        const group = document.getElementById(`group-${campo}`);
-        if (!group) return true;
-        
-        const val = inputs[campo].value.trim();
-        let error = '';
-
-        switch (campo) {
-          case 'nombre':
-          case 'apellido':
-            if (!val) error = 'Campo requerido.';
-            else if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{2,}$/.test(val)) error = 'Solo letras válidas.';
-            break;
-
-          case 'correo':
-            if (!val) error = 'Correo requerido.';
-            else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) error = 'Correo inválido.';
-            break;
-
-          case 'password':
-            if (!val) error = 'Contraseña requerida.';
-            else if (val.length < 6) error = 'Mínimo 6 caracteres.';
-            break;
-
-          case 'confirmPassword':
-            if (!val) error = 'Confirma tu contraseña.';
-            else if (val !== inputs.password.value) error = 'Las contraseñas no coinciden.';
-            break;
-
-          case 'cedula':
-            if (!val) error = 'Documento requerido.';
-            else if (val.length < 6 || val.length > 9) error = 'Inválido (6 a 9 dígitos).';
-            break;
-
-          case 'pais':
-            if (!val) error = 'Selecciona un país.';
-            break;
-
-          case 'telefono':
-            if (!inputs.codigoPais.value) error = 'Selecciona el código.';
-            else if (!val) error = 'Número requerido.';
-            else if (val.length < 7 || val.length > 12) error = 'Número incompleto.';
-            break;
-        }
-
-        const msgEl = group.querySelector('.msg-error');
-
-        if (error) {
-          group.classList.add('error');
-          group.classList.remove('success');
-          if (msgEl) msgEl.textContent = error;
-          return false;
-        } else {
-          group.classList.remove('error');
-          group.classList.add('success');
-          if (msgEl) msgEl.textContent = '';
-          return true;
-        }
+      // Validación con RegEx en JavaScript
+      if (!pattern.test(val)) {
+        inputGroup.classList.add('invalid');
+        const hint = countrySelect.options[countrySelect.selectedIndex].getAttribute('data-hint');
+        feedback.textContent = `Formato inválido. Requiere: ${hint}`;
+        return false;
+      } else {
+        inputGroup.classList.remove('invalid');
+        feedback.textContent = '';
+        return true;
       }
+    }
 
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
+    countrySelect.addEventListener('change', syncPattern);
+    phoneInput.addEventListener('input', validateField);
 
-        const campos = ['nombre', 'apellido', 'correo', 'password', 'confirmPassword', 'cedula', 'pais', 'telefono'];
-        const resultados = campos.map(campo => validarCampo(campo));
-        const esValido = resultados.every(res => res === true);
-
-        if (esValido) {
-          btnSubmit.textContent = 'Enviando...';
-          btnSubmit.style.opacity = '0.7';
-          btnSubmit.disabled = true;
-
-          setTimeout(() => {
-            mostrarAlertaExito();
-            form.reset();
-            campos.forEach(campo => {
-              const g = document.getElementById(`group-${campo}`);
-              if(g) g.classList.remove('success', 'error');
-            });
-            btnSubmit.textContent = 'Completar Registro';
-            btnSubmit.style.opacity = '1';
-            btnSubmit.disabled = false;
-          }, 1000);
-        }
-      });
-
-      function mostrarAlertaExito() {
-        const modal = document.createElement('div');
-        modal.style.cssText = `
-          position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-          background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(10px);
-          display: grid; place-items: center; z-index: 9999;
-        `;
-
-        modal.innerHTML = `
-          <div style="background: #0b1120; border: 1px solid #34d399; padding: 2.5rem; border-radius: 1.2rem; text-align: center; max-width: 380px; box-shadow: 0 0 35px rgba(52, 211, 153, 0.4);">
-            <h3 style="color: #fff; font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;">¡Registro Exitoso!</h3>
-            <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 1.5rem;">Tus datos han sido validados y registrados correctamente.</p>
-            <button id="btnCerrarModal" style="background: #34d399; color: #030712; border: none; padding: 0.8rem 1.5rem; font-weight: 800; border-radius: 0.6rem; cursor: pointer; font-size: 1rem; width: 100%;">Aceptar</button>
-          </div>
-        `;
-
-        document.body.appendChild(modal);
-        document.getElementById('btnCerrarModal').addEventListener('click', () => modal.remove());
+    document.getElementById('phoneForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (validateField() && phoneInput.value.trim() !== '') {
+        alert(`Teléfono correcto: ${countrySelect.value} ${phoneInput.value}`);
+      } else {
+        validateField();
+        if(!phoneInput.value) feedback.textContent = 'Este campo es obligatorio.';
       }
     });
+
+    // Inicializar al cargar
+    syncPattern();
   </script>
 </body>
 </html>
